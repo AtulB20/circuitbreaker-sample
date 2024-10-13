@@ -13,12 +13,12 @@ public class SampleController {
         this.sampleService = sampleService;
     }
 
-    @GetMapping("/sample/{index}")
+    @GetMapping("/api/circuit-breaker/{index}")
     public Todo getSampleData(@PathVariable int index) {
         return sampleService.getSampleDataCircuitBreaker(index);
     }
 
-    @GetMapping("/sample/retry/{index}")
+    @GetMapping("/api/retry/{index}")
     public Todo getSampleDataRetry(@PathVariable int index) {
         return sampleService.getSampleDataWithRetry(index);
     }
