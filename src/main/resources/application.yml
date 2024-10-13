@@ -1,0 +1,34 @@
+management.endpoints.web.exposure.include: health
+management.endpoint.health.show-details: always
+
+management.health.circuitbreakers.enabled: true
+management.health.ratelimiters.enabled: true
+
+resilience4j.circuitbreaker:
+  instances:
+    sample-service:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: COUNT_BASED
+      minimumNumberOfCalls: 3
+      waitDurationInOpenState: 300s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+
+resilience4j.retry:
+  instances:
+    sample-service:
+      maxAttempts: 3
+      waitDuration: 10s
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      retryExceptions:
+        - org.springframework.web.client.HttpServerErrorException
+        - org.springframework.web.client.HttpClientErrorException
+        - java.io.IOException
+
+resilience4j.bulkhead:
+  instances:
+    sample-service:
+      maxConcurrentCalls: 10
